@@ -21,14 +21,15 @@
 
 
 ## 四种流：
-  1. 可写（Writable）： 可以向其中写入数据的流。
-  2. 可读（Readable）： 可以从中读取数据的流。
+  1. 可写（Writable）： 可以向其中写入数据的流。 [查看测试代码](../demo/streamDemo1.js);
+  2. 可读（Readable）： 可以从中读取数据的流。 [查看测试代码](../demo/streamDemo2.js);
   3. 双工（Duplex）： 这种流，能读能写。
   4. 转换 (Transform) ： 可在写入和读取时修改或转换数据。比如压缩。
 
-
-可读流测试： [streamDemo1.js](../demo/streamDemo1.js);
-可写流测试： [streamDemo2.js](../demo/streamDemo2.js);
+所有的stream对象都是EventEmitter实例。
+  可监听的事件：data, end, error
+  data事件在可读流中不断被触发。每次触发会向事件处理函数传入 chunk数据，chunk数据大小取决与缓冲区大小，默认16k
+  缓冲区大小配置highWaterMark(单位是字节)：```fs.createReadStream('xxx',{highWaterMark:32})```  [查看测试代码](../demo/streamDemo3.js)
 
 
 
