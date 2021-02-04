@@ -1,4 +1,4 @@
-# Node.js stream
+# stream 学习笔记
 
 参考文章：https://nodesource.com/blog/understanding-streams-in-nodejs
 
