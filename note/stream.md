@@ -26,10 +26,28 @@
   3. 双工（Duplex）： 这种流，能读能写。
   4. 转换 (Transform) ： 可在写入和读取时修改或转换数据。比如压缩。
 
-所有的stream对象都是EventEmitter实例。
-  可监听的事件：data, end, error
-  data事件在可读流中不断被触发。每次触发会向事件处理函数传入 chunk数据，chunk数据大小取决与缓冲区大小，默认16k
-  缓冲区大小配置highWaterMark(单位是字节)：```fs.createReadStream('xxx',{highWaterMark:32})```  [查看测试代码](../demo/streamDemo3.js)
+
+所有的stream对象都是EventEmitter实例，所以可以直接注册事件监听器:
+```javascript
+  const RS = fs.createReaderStream('xxx.txt');
+  RS.on('end',()=>{
+    console.log('读取完毕');
+  })
+
+```
+
+  data事件在可读流中不断被触发。每次触发会向事件处理函数传入 chunk数据，chunk数据大小取决与缓冲区大小，stream创建的可读流缓冲区默认16k [对应文档](http://nodejs.cn/api/stream.html#stream_implementing_a_readable_stream)
+  
+  缓冲区大小配置 highWaterMark(单位是字节)：```fs.createReadStream('xxx',{highWaterMark:32})```  [查 看测试代码](../demo/streamDemo3.js)
+
+  ⚠️：fs.createReadStream()的highWaterMark默认值是64kb
 
 
 
+可读流有[两种模式](http://nodejs.cn/api/stream.html#stream_two_reading_modes)：
+  1. 自动流动(默认)
+  2. 手动流动，```stream.read()```主动读取下一个chunk 
+
+>在流模式下，将自动从底层系统读取数据，并通过 EventEmitter 接口使用事件将其尽快提供给程序。
+>
+>在 paused 模式下，必须显式调用 stream.read() 方法以从流中读取数据块
